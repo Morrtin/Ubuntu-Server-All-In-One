@@ -16,7 +16,6 @@ function download()
 
 mkdir ~/firmware
 cd ~/firmware
-download $DOWNLOAD_URL"xbmc_upstart_script_2"
 download $FIRMWARE_DOWNLOAD_URL"linux-firmware_1.108_all.deb"
 #sudo dpkg -i *deb
 	
