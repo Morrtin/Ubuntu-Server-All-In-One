@@ -1,12 +1,11 @@
-xbmc-ubuntu-minimal
-===================
+Ubuntu All-In-One Server
+========================
 
-* Install Ubuntu Server 12.04LTS on your machine...
+* Install Ubuntu Server 12.04 LTS 64bit on your machine...
+* After installation connect your A/V receiver, TV to the Server like you will use it in production
+* Start Server and from now on only use SSH
 
-* Make sure you installed your Ubuntu with xbmc user or create xbmc user after installation 
-  and add user to sudo group
-
-* On INTEL systems it is recommended to upgrade to kernel 3.9 (inclusive firmware update)
+* On INTEL systems it is recommended to upgrade to kernel 3.9 (inclusive firmware update) for proper XBMC
 
 ```
 cd ~ 
@@ -14,7 +13,9 @@ https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/download/01_Kerne
 bash ./01_Kernel_update
 ```
 
-* ...and run the following on the machine afterwards to install and configure XBMC (NVIDIA, ATI and Intel video cards supported):
+* Create xbmc user and add it to sudo group
+* Logon to xbmc user via SSH
+* ...and run the following to install and configure XBMC (NVIDIA, ATI and Intel video cards supported):
 
 ```
 cd ~ 
