@@ -10,7 +10,7 @@ Ubuntu All-In-One Server
 ```
 cd ~ 
 wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/download/01_Kernel_update.sh
-bash ./01_Kernel_update
+bash ./01_Kernel_update.sh
 ```
 
 * Create xbmc user and add it to sudo group
