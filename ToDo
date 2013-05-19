@@ -1,0 +1,13 @@
+-- 19-05-2013 --
+
+Server
+========================
+- Add Trim function for SSD (running in cron job)
+
+XBMC
+========================
+- Fix errors around install.
+- Add support to exit xbmc to terminal
+- Drop into console login when Exit in Powermenu in XBMC.
+- Add INTEL temperature support via advancedsettings.xml
+
