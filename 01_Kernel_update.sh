@@ -17,7 +17,7 @@ function download()
 mkdir ~/firmware
 cd ~/firmware
 download $FIRMWARE_DOWNLOAD_URL"linux-firmware_1.108_all.deb"
-#sudo dpkg -i *deb
+sudo dpkg -i *deb
 	
 mkdir ~/3.9.0
 cd ~/3.9.0
@@ -25,5 +25,6 @@ download $KERNEL_DOWNLOAD_URL"linux-headers-3.9.0-030900-generic_3.9.0-030900.20
 download $KERNEL_DOWNLOAD_URL"linux-headers-3.9.0-030900_3.9.0-030900.201304291257_all.deb"  > /dev/null 2>&1
 download $KERNEL_DOWNLOAD_URL"linux-image-3.9.0-030900-generic_3.9.0-030900.201304291257_amd64.deb"  > /dev/null 2>&1
 
-#sudo dpkg -i *deb
-#sudo update-grub
+sudo dpkg -i *deb
+sudo update-grub
+cd ~
