@@ -259,7 +259,7 @@ function fixUsbAutomount()
     handleFileBackup "$MODULES_FILE" 1 1
     appendToFile $MODULES_FILE "usb-storage"
     createDirectory "$TEMP_DIRECTORY" 1 0
-    download $DOWNLOAD_URL"media-by-label-auto-mount.rules"
+    download $DOWNLOAD_URL"11-media-by-label-auto-mount.rules"
 
     if [ -e $TEMP_DIRECTORY"media-by-label-auto-mount.rules" ]; then
 	    IS_MOVED=$(move $TEMP_DIRECTORY"11-media-by-label-auto-mount.rules" "$AUTO_MOUNT_RULES_FILE")
