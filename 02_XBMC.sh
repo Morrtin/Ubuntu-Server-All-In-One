@@ -945,5 +945,5 @@ installAirplay
 #selectAdditionalPackages
 #allowRemoteWakeup
 #optimizeInstallation
-cleanUp
+#cleanUp
 rebootMachine
