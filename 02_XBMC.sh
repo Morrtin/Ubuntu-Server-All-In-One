@@ -851,8 +851,12 @@ function optimizeInstallation()
     
     handleFileBackup "$SYSCTL_CONF_FILE" 1 0
     createFile "$SYSCTL_CONF_FILE" 1 0
+
     appendToFile "$SYSCTL_CONF_FILE" "dev.cdrom.lock=0"
-    appendToFile "$SYSCTL_CONF_FILE" "vm.swappiness=10"
+#	The Linux kernel provides a tweakable setting that controls how often the swap file is used, called swappiness
+#	http://askubuntu.com/questions/103915/how-do-i-configure-swappiness
+#	No swapfile, no swappiness needed.
+    appendToFile "$SYSCTL_CONF_FILE" "vm.swappiness=0"
 }
 
 function cleanUp()

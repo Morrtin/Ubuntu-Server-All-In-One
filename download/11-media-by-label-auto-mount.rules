@@ -1,5 +1,5 @@
-# Start at sdb to avoid system harddrive.
-KERNEL!="sd[b-z][0-9]", GOTO="media_by_label_auto_mount_end"
+# Start at sdf to avoid system and raid harddrive.
+KERNEL!="sd[f-z][0-9]", GOTO="media_by_label_auto_mount_end"
 
 # Import FS infos
 IMPORT{program}="/sbin/blkid -o udev -p %N"
