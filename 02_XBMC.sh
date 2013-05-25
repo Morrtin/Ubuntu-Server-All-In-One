@@ -256,12 +256,12 @@ function fixUsbAutomount()
 # Program usbmount is not used because it is not maintent anymore and dev rule solution is the nativ one
 # User xbmc has to be added to group users - see section addUserToRequiredGroups
 # Also udisks has to be installed and user xbmc has to get permissions to handle udisks policies - see section installPowerManagement
-    handleFileBackup "$MODULES_FILE" 1 1
+    handleFileBackup "$MODULES_FILE" 1 0
     appendToFile $MODULES_FILE "usb-storage"
     createDirectory "$TEMP_DIRECTORY" 1 0
     download $DOWNLOAD_URL"11-media-by-label-auto-mount.rules"
 
-    if [ -e $TEMP_DIRECTORY"media-by-label-auto-mount.rules" ]; then
+    if [ -e $TEMP_DIRECTORY"11-media-by-label-auto-mount.rules" ]; then
 	    IS_MOVED=$(move $TEMP_DIRECTORY"11-media-by-label-auto-mount.rules" "$AUTO_MOUNT_RULES_FILE")
 	    showInfo "USB automount successfully fixed"
 	else
