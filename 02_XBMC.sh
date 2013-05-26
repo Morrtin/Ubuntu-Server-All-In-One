@@ -475,7 +475,8 @@ function installVideoDriver()
     elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == ADVANCED ]]; then
         VIDEO_DRIVER="fglrx"
     elif [[ $GFX_CARD == INTEL ]]; then
-        VIDEO_DRIVER="i965-va-driver"
+#        VIDEO_DRIVER="i965-va-driver"
+        VIDEO_DRIVER="libva-intel-vaapi-driver"
     elif [[ $GFX_CARD == VMWARE ]]; then
         VIDEO_DRIVER="i965-va-driver"
     else
@@ -512,6 +513,11 @@ function installVideoDriver()
                     showInfo "ATI underscan configuration skipped"
                     ;;
             esac
+		elif [ "$GFX_CARD" == "INTEL" ] && [ "$XBMC_PPA" == "ppa:wsnipex/vaapi" ]; then
+# Additional packages for VAAPI testing
+# http://forum.xbmc.org/showthread.php?tid=165707
+			IS_INSTALLED=$(aptInstall libva1)
+			IS_INSTALLED=$(aptInstall vainfo)
         fi
         
         showInfo "$GFX_CARD video drivers successfully installed and configured"
@@ -667,7 +673,7 @@ function applyScreenResolution()
 function installLmSensors()
 {
     showInfo "Installing temperature monitoring package (apply all defaults)..."
-    aptInstall lm-sensors
+    IS_INSTALLED=$(aptInstall lm-sensors)
     clear
     echo ""
     echo "$(tput setaf 2)$(tput bold)INSTALLATION INFO: Please confirm all questions with ENTER (applying the suggested option)."
@@ -711,7 +717,7 @@ function selectXbmcPpa()
     options=(1 "Team XBMC (stable)" on
             2 "Team XBMC (UNstable)" off
             3 "Wsnipex - Frodo (stable)" off
-            4 "Wsnipex - Git Builds (tested)" off)
+            4 "Wsnipex - INTEL VAAPI" off)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -726,7 +732,7 @@ function selectXbmcPpa()
             addXbmcPpa "ppa:wsnipex/xbmc-xvba-frodo"
             ;;
         4)
-            addXbmcPpa "ppa:wsnipex/xbmc-xvba"
+            addXbmcPpa "ppa:wsnipex/vaapi"
             ;;
         *)
             addXbmcPpa
@@ -935,7 +941,9 @@ applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
 selectXbmcPpa
 distUpgrade
-#installVideoDriver
+if [ "$XBMC_PPA" == "ppa:wsnipex/vaapi" ]; then
+	installVideoDriver
+fi
 installXinit
 installXbmc
 installXbmcInitScript
