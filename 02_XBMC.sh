@@ -1,13 +1,14 @@
 #!/bin/bash
 #
-# @author   Bram van Oploo
-# @date     2013-02-12
-# @version  2.6.3
+# @author   Morrtin
+# @Original script by Bram van Oploo
+# @date     2013-05-27
+# @version  1.0.0
 #
 
 XBMC_USER="xbmc"
 THIS_FILE=$0
-SCRIPT_VERSION="2.6.3"
+SCRIPT_VERSION="1.0.0"
 VIDEO_DRIVER=""
 HOME_DIRECTORY="/home/$XBMC_USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
@@ -42,7 +43,7 @@ OSCAM_PPA="ppa:oscam/ppa"
 
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
-SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.10 by Bram van Oploo :: bram@sudo-systems.com :: www.sudo-systems.com"
+SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.04.2"
 
 GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
@@ -490,9 +491,9 @@ function installVideoDriver()
         echo ""
         exit
     fi
+	
+	IS_INSTALLED=$(aptInstall $VIDEO_DRIVER)
     
-    IS_INSTALLED=$(aptInstall $VIDEO_DRIVER)
-
     if [ "$IS_INSTALLED" == "1"]; then
         if [ "$GFX_CARD" == "ATI" ] || [ "$GFX_CARD" == "AMD" ]; then
             configureAtiDriver
@@ -513,13 +514,14 @@ function installVideoDriver()
                     showInfo "ATI underscan configuration skipped"
                     ;;
             esac
-		elif [ "$GFX_CARD" == "INTEL" ] && [ "$XBMC_PPA" == "ppa:wsnipex/vaapi" ]; then
-# Additional packages for VAAPI testing
-# http://forum.xbmc.org/showthread.php?tid=165707
+        elif [ "$GFX_CARD" == "INTEL" ]; then
+		# Additional packages for VAAPI testing
+		# http://forum.xbmc.org/showthread.php?tid=165707
 			IS_INSTALLED=$(aptInstall libva1)
 			IS_INSTALLED=$(aptInstall vainfo)
-        fi
-        
+			IS_INSTALLED=$(aptInstall libva-glx1)
+			showInfo "Additional $GFX_CARD updates installed"
+		fi
         showInfo "$GFX_CARD video drivers successfully installed and configured"
     fi
 }
@@ -717,7 +719,7 @@ function selectXbmcPpa()
     options=(1 "Team XBMC (stable)" on
             2 "Team XBMC (UNstable)" off
             3 "Wsnipex - Frodo (stable)" off
-            4 "Wsnipex - INTEL VAAPI" off)
+            4 "Wsnipex - INTEL VAAPI (test)" off)
          
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
@@ -941,9 +943,7 @@ applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
 selectXbmcPpa
 distUpgrade
-if [ "$XBMC_PPA" == "ppa:wsnipex/vaapi" ]; then
-	installVideoDriver
-fi
+installVideoDriver
 installXinit
 installXbmc
 installXbmcInitScript
