@@ -38,6 +38,7 @@ SYSCTL_CONF_FILE="/etc/sysctl.conf"
 RSYSLOG_FILE="/etc/init/rsyslog.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/download/"
+XBMC_PPA="ppa:wsnipex/vaapi"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
@@ -291,8 +292,6 @@ function addUserToRequiredGroups()
 
 function addXbmcPpa()
 {
-	XBMC_PPA="$1"
-
     showInfo "Adding repository $XBMC_PPA ..."
 	addRepository "$XBMC_PPA"
 }
@@ -476,7 +475,6 @@ function installVideoDriver()
     elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == ADVANCED ]]; then
         VIDEO_DRIVER="fglrx"
     elif [[ $GFX_CARD == INTEL ]]; then
-#        VIDEO_DRIVER="i965-va-driver"
         VIDEO_DRIVER="libva-intel-vaapi-driver"
     elif [[ $GFX_CARD == VMWARE ]]; then
         VIDEO_DRIVER="i965-va-driver"
@@ -514,13 +512,6 @@ function installVideoDriver()
                     showInfo "ATI underscan configuration skipped"
                     ;;
             esac
-        elif [ "$GFX_CARD" == "INTEL" ]; then
-		# Additional packages for VAAPI testing
-		# http://forum.xbmc.org/showthread.php?tid=165707
-			IS_INSTALLED=$(aptInstall libva1)
-			IS_INSTALLED=$(aptInstall vainfo)
-			IS_INSTALLED=$(aptInstall libva-glx1)
-			showInfo "Additional $GFX_CARD updates installed"
 		fi
         showInfo "$GFX_CARD video drivers successfully installed and configured"
     fi
@@ -708,38 +699,6 @@ function reconfigureXServer()
     createFile "$XWRAPPER_FILE" 1 1
 	appendToFile "$XWRAPPER_FILE" "allowed_users=anybody"
 	showInfo "X-server successfully configured"
-}
-
-function selectXbmcPpa()
-{
-    cmd=(dialog --backtitle "Select PPA to add"
-        --radiolist "Please select the PPA you like to add and install XBMC from:" 
-        15 $DIALOG_WIDTH 6)
-        
-    options=(1 "Team XBMC (stable)" on
-            2 "Team XBMC (UNstable)" off
-            3 "Wsnipex - Frodo (stable)" off
-            4 "Wsnipex - INTEL VAAPI (test)" off)
-         
-    choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-
-    case ${choice//\"/} in
-        1)
-            addXbmcPpa "ppa:team-xbmc/ppa"
-            ;;
-        2)
-            addXbmcPpa "ppa:team-xbmc/unstable"
-            ;;
-        3)
-            addXbmcPpa "ppa:wsnipex/xbmc-xvba-frodo"
-            ;;
-        4)
-            addXbmcPpa "ppa:wsnipex/vaapi"
-            ;;
-        *)
-            addXbmcPpa
-            ;;
-    esac
 }
 
 function selectXbmcTweaks()
@@ -941,7 +900,7 @@ trap control_c SIGINT
 fixUsbAutomount
 applyXbmcNiceLevelPermissions
 addUserToRequiredGroups
-selectXbmcPpa
+addXbmcPpa
 distUpgrade
 installVideoDriver
 installXinit
@@ -957,5 +916,5 @@ installAirplay
 #selectAdditionalPackages
 #allowRemoteWakeup
 #optimizeInstallation
-#cleanUp
+cleanUp
 rebootMachine
