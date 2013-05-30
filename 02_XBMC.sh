@@ -9,7 +9,6 @@
 XBMC_USER="xbmc"
 THIS_FILE=$0
 SCRIPT_VERSION="1.0.0"
-VIDEO_DRIVER=""
 HOME_DIRECTORY="/home/$XBMC_USER/"
 TEMP_DIRECTORY=$HOME_DIRECTORY"temp/"
 ENVIRONMENT_FILE="/etc/environment"
@@ -23,28 +22,28 @@ XBMC_KEYMAPS_DIR=$XBMC_USERDATA_DIR"keymaps/"
 XBMC_ADVANCEDSETTINGS_FILE=$XBMC_USERDATA_DIR"advancedsettings.xml"
 XBMC_INIT_CONF_FILE="/etc/init/xbmc.conf"
 XBMC_XSESSION_FILE="/home/xbmc/.xsession"
-UPSTART_JOB_FILE="/lib/init/upstart-job"
 XWRAPPER_FILE="/etc/X11/Xwrapper.config"
+XORG_FILE="/etc/X11/xorg.conf"
 GRUB_CONFIG_FILE="/etc/default/grub"
 GRUB_HEADER_FILE="/etc/grub.d/00_header"
 SYSTEM_LIMITS_FILE="/etc/security/limits.conf"
 INITRAMFS_SPLASH_FILE="/etc/initramfs-tools/conf.d/splash"
 INITRAMFS_MODULES_FILE="/etc/initramfs-tools/modules"
-XWRAPPER_CONFIG_FILE="/etc/X11/Xwrapper.config"
 MODULES_FILE="/etc/modules"
 REMOTE_WAKEUP_RULES_FILE="/etc/udev/rules.d/90-enable-remote-wakeup.rules"
 AUTO_MOUNT_RULES_FILE="/etc/udev/rules.d/11-media-by-label-auto-mount.rules"
 SYSCTL_CONF_FILE="/etc/sysctl.conf"
-RSYSLOG_FILE="/etc/init/rsyslog.conf"
 POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/download/"
+# VAAPI PPA from WSNIPEX includes INTEL VAAPI (hardware / GPU) de-interlacing support
+# http://forum.xbmc.org/showthread.php?tid=165707
 XBMC_PPA="ppa:wsnipex/vaapi"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
 LOG_FILE=$HOME_DIRECTORY"xbmc_installation.log"
 DIALOG_WIDTH=70
-SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 12.04.2"
+SCRIPT_TITLE="XBMC installation script v$SCRIPT_VERSION for Ubuntu 13.04"
 
 GFX_CARD=$(lspci |grep VGA |awk -F: {' print $3 '} |awk {'print $1'} |tr [a-z] [A-Z])
 
@@ -62,11 +61,6 @@ function showError()
     CUR_DATE=$(date +%Y-%m-%d" "%H:%M)
     echo "$CUR_DATE - ERROR :: $@" >> $LOG_FILE
     dialog --title "Error" --backtitle "$SCRIPT_TITLE" --msgbox "$@" 8 $DIALOG_WIDTH
-}
-
-function update()
-{
-    sudo apt-get update > /dev/null 2>&1
 }
 
 function createFile()
@@ -157,7 +151,7 @@ function addRepository()
     sudo add-apt-repository -y $REPOSITORY > /dev/null 2>&1
 
     if [ "$?" == "0" ]; then
-        update
+        sudo apt-get update > /dev/null 2>&1
         showInfo "$REPOSITORY repository successfully added"
         echo 1
     else
@@ -241,7 +235,7 @@ function installDependencies()
 
 	# python-software-properties for add-apt-repository (Ubuntu 12.04)
 	# software-properties-common for add-apt-repository (Ubuntu 12.10 and above)
-	sudo apt-get -y install dialog python-software-properties software-properties-common > /dev/null 2>&1
+	sudo apt-get -y install dialog software-properties-common > /dev/null 2>&1
 }
 
 function fixLocaleBug()
@@ -299,7 +293,7 @@ function addXbmcPpa()
 function distUpgrade()
 {
     showInfo "Updating Ubuntu with latest packages (may take a while)..."
-	update
+	sudo apt-get update > /dev/null 2>&1
 	sudo apt-get -y dist-upgrade > /dev/null 2>&1
 	showInfo "Ubuntu installation updated"
 }
@@ -469,52 +463,11 @@ function enableAtiUnderscan()
 function installVideoDriver()
 {
     showInfo "Installing $GFX_CARD video drivers (may take a while)..."
-    
-    if [[ $GFX_CARD == NVIDIA ]]; then
-        VIDEO_DRIVER="nvidia-current"
-    elif [[ $GFX_CARD == ATI ]] || [[ $GFX_CARD == AMD ]] || [[ $GFX_CARD == ADVANCED ]]; then
-        VIDEO_DRIVER="fglrx"
-    elif [[ $GFX_CARD == INTEL ]]; then
-        VIDEO_DRIVER="libva-intel-vaapi-driver"
-    elif [[ $GFX_CARD == VMWARE ]]; then
-        VIDEO_DRIVER="i965-va-driver"
-    else
-        cleanUp
-        clear
-        echo ""
-        echo "$(tput setaf 1)$(tput bold)Installation aborted...$(tput sgr0)" 
-        echo "$(tput setaf 1)Only NVIDIA, ATI/AMD or INTEL videocards are supported. Please install a compatible videocard and run the script again.$(tput sgr0)"
-        echo ""
-        echo "$(tput setaf 1)You have a $GFX_CARD videocard.$(tput sgr0)"
-        echo ""
-        exit
-    fi
-	
-	IS_INSTALLED=$(aptInstall $VIDEO_DRIVER)
-    
-    if [ "$IS_INSTALLED" == "1"]; then
-        if [ "$GFX_CARD" == "ATI" ] || [ "$GFX_CARD" == "AMD" ]; then
-            configureAtiDriver
-
-            dialog --title "Disable underscan" \
-                --backtitle "$SCRIPT_TITLE" \
-                --yesno "Do you want to disable underscan (removes black borders)? Do this only if you're sure you need it!" 7 $DIALOG_WIDTH
-
-            RESPONSE=$?
-            case ${RESPONSE//\"/} in
-                0) 
-                    disbaleAtiUnderscan
-                    ;;
-                1) 
-                    enableAtiUnderscan
-                    ;;
-                255) 
-                    showInfo "ATI underscan configuration skipped"
-                    ;;
-            esac
-		fi
-        showInfo "$GFX_CARD video drivers successfully installed and configured"
-    fi
+    IS_INSTALLED=$(aptInstall i965-va-driver)
+	IS_INSTALLED=$(aptInstall libva-intel-vaapi-driver)
+	IS_INSTALLED=$(aptInstall libva1)
+	IS_INSTALLED=$(aptInstall libva-glx1)
+    showInfo "$GFX_CARD video drivers successfully installed and configured"
 }
 
 function installAutomaticDistUpgrade()
@@ -695,9 +648,25 @@ function installLmSensors()
 function reconfigureXServer()
 {
     showInfo "Configuring X-server..."
+	
+	showInfo "Configuring Xwrapper..."
     handleFileBackup "$XWRAPPER_FILE" 1
     createFile "$XWRAPPER_FILE" 1 1
 	appendToFile "$XWRAPPER_FILE" "allowed_users=anybody"
+	
+	#Do get 23.976 mode in XBMC working - xorg.conf has to be modifed.
+	showInfo "Configuring Xorg.conf..."
+	createDirectory "$TEMP_DIRECTORY" 1 0
+	download $DOWNLOAD_URL"xorg.conf"
+	handleFileBackup "$XORG_FILE" 1 1
+	IS_MOVED=$(move $TEMP_DIRECTORY"xorg.conf" "$XORG_FILE")
+	
+	if [ "$IS_MOVED" == "1" ]; then
+		showInfo "xorg.conf successfully configured"
+    else
+        showError "xorg.conf could not be configured"
+    fi
+	
 	showInfo "X-server successfully configured"
 }
 
@@ -806,19 +775,8 @@ function selectAdditionalPackages()
 function optimizeInstallation()
 {
     showInfo "Optimizing installation..."
-    sudo service apparmor stop > /dev/null &2>1
-    sudo service apparmor teardown > /dev/null &2>1
-    sudo update-rc.d -f apparmor remove > /dev/null &2>1	
-    sudo apt-get remove --purge apparmor -y > /dev/null &2>1
-    
-    createDirectory "$TEMP_DIRECTORY" 1 0
-	handleFileBackup $RSYSLOG_FILE 0 1
-	download $DOWNLOAD_URL"rsyslog.conf"
-	move $TEMP_DIRECTORY"rsyslog.conf" "$RSYSLOG_FILE" 1
-    
     handleFileBackup "$SYSCTL_CONF_FILE" 1 0
     createFile "$SYSCTL_CONF_FILE" 1 0
-
     appendToFile "$SYSCTL_CONF_FILE" "dev.cdrom.lock=0"
 #	The Linux kernel provides a tweakable setting that controls how often the swap file is used, called swappiness
 #	http://askubuntu.com/questions/103915/how-do-i-configure-swappiness
@@ -912,7 +870,7 @@ reconfigureXServer
 installPowerManagement
 #installAudio
 installAirplay
-#selectXbmcTweaks			# After install temperatur for CPU and GPU on Intel is not working in XBMC - try without it
+#selectXbmcTweaks
 #selectAdditionalPackages
 #allowRemoteWakeup
 #optimizeInstallation
