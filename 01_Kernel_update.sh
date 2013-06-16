@@ -29,4 +29,5 @@ sudo dpkg -i *deb
 echo "Updating Grub"
 sudo update-grub
 cd ~
+rm 01_Kernel_update.sh
 rm -R ~/3.9.x
