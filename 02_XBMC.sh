@@ -873,6 +873,6 @@ installAirplay
 #selectXbmcTweaks
 #selectAdditionalPackages
 #allowRemoteWakeup
-#optimizeInstallation
+optimizeInstallation
 cleanUp
 rebootMachine
