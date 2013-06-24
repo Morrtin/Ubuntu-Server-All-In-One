@@ -621,13 +621,8 @@ function installLmSensors()
     showInfo "Installing temperature monitoring package (apply all defaults)..."
     IS_INSTALLED=$(aptInstall lm-sensors)
     clear
-    echo ""
-    echo "$(tput setaf 2)$(tput bold)INSTALLATION INFO: Please confirm all questions with ENTER (applying the suggested option)."
-    echo "$(tput setaf 2)The XBMC installation will continue automatically when finished.$(tput sgr0)"
-    echo ""
-    echo ""
     
-    sudo sensors-detect
+    yes "" | sensors-detect
     
     if [ ! -e "$XBMC_ADVANCEDSETTINGS_FILE" ]; then
 	    createDirectory "$TEMP_DIRECTORY" 1 0
