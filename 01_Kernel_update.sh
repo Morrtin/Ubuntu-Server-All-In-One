@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # @author   Morrtin
-# @date     2013-05-30
+# @date     2013-07-11
 # @version  1.0
 #
 
@@ -17,8 +17,8 @@ function download()
 }
 
 clear
-mkdir ~/3.9.x
-cd ~/3.9.x
+mkdir ~/3.10.x
+cd ~/3.10.x
 echo "Downloading Firmware $FIRMWARE_VERSION"
 download $FIRMWARE_DOWNLOAD_URL"linux-firmware_1.111_all.deb"
 echo "Downloading Kernel $KERNEL_VERSION"
@@ -31,4 +31,4 @@ echo "Updating Grub"
 sudo update-grub
 cd ~
 rm ~/01_Kernel_update.sh
-rm -R ~/3.9.x
+rm -R ~/3.10.x
