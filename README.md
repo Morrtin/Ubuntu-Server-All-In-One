@@ -28,6 +28,7 @@ bash ./01_Kernel_update.sh
 ```
 
 * ...and run the following to install and configure XBMC:
+
 ATTENTION: XBMC script copies a xorg.conf with a special monitor setup (my TV).
 You can delete the file at: /etc/X11
 
