@@ -34,21 +34,23 @@ XBMC setup specifics:
 ```
 Packages not installed:
 ```
-** fixLocaleBug
-** XbmcBootScreen
-** ScreenResolution
-** Audio
-** XbmcTweaks
-** AdditionalPackages
-** RemoteWakeup
+* fixLocaleBug
+* XbmcBootScreen
+* ScreenResolution
+* Audio
+* XbmcTweaks
+* AdditionalPackages
+* RemoteWakeup
 
 These packages can be enabled when you edit the script before running it and
 remove hashes (#) at the bottom of the file.
 
 * ...and run the following to install and configure XBMC:
+
 ```
 cd ~ 
 wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/02_XBMC.sh
 bash ./02_XBMC.sh
 ```
+
 [![lgplv3](https://f.cloud.github.com/assets/3521959/153710/2745bbea-7601-11e2-8b61-c8ff3ef97d32.png)](http://www.gnu.org/licenses/lgpl.txt)
