@@ -27,11 +27,25 @@ wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/01_Kernel_up
 bash ./01_Kernel_update.sh
 ```
 
+XBMC setup specifics:
+* Custom xorg.conf for my TV - Can be deleted at: /etc/X11
+* XBMC ppa used: ppa:wsnipex/vaapi
+
+```
+Packages not installed:
+```
+** fixLocaleBug
+** XbmcBootScreen
+** ScreenResolution
+** Audio
+** XbmcTweaks
+** AdditionalPackages
+** RemoteWakeup
+
+These packages can be enabled when you edit the script before running it and
+remove hashes (#) at the bottom of the file.
+
 * ...and run the following to install and configure XBMC:
-
-ATTENTION: XBMC script copies a xorg.conf with a special monitor setup (my TV).
-You can delete the file at: /etc/X11
-
 ```
 cd ~ 
 wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/02_XBMC.sh
