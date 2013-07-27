@@ -1,13 +1,15 @@
--- 19-05-2013 --
+-- 27-07-2013 --
 
 Server
 ========================
-- Add Trim function for SSD (running in cron job)
+- Solve transfer speed Problem: Copy from Server to Client over Samba Share takes ages
+- Next big step: Groupware - Zarafa
 
 XBMC
 ========================
-- Fix errors around install.
 - Add support to exit xbmc to terminal
 - Drop into console login when Exit in Powermenu in XBMC.
-- Add INTEL temperature support via advancedsettings.xml
+- Correct INTEL CPU temperature via advancedsettings.xml to show real temerature.
+-- From my research GPU temperature won't work on my system as there is no sensor
+- Install Maraschino 
 

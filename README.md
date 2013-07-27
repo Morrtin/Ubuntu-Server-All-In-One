@@ -13,14 +13,8 @@ otherwise I don't recommend to run these scripts.
 
 * On INTEL systems it is recommended to upgrade at least to kernel 3.9 (inclusive firmware update) for proper XBMC.
 
-* An upgrade to kernel 3.10.1 didn't work for me. Airplay was broken so I downgraded to 3.9.x
-```
-cd ~ 
-wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/01_Kernel_update_3_9_x.sh
-bash ./01_Kernel_update_3_9_x.sh
-```
 
-* If you like you can try / use kernel 3.10.x
+* Latest firmware and kernel v3.10.x upgrade
 ```
 cd ~ 
 wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/01_Kernel_update.sh
