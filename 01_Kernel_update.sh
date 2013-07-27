@@ -13,7 +13,7 @@ FIRMWARE_VERSION="v1.112"
 function download()
 {
     URL="$@"
-    wget -q "$URL" > /dev/null 2>&1
+    wget -q "$URL"
 }
 
 clear
@@ -22,9 +22,9 @@ cd ~/3.10.x
 echo "Downloading Firmware $FIRMWARE_VERSION"
 download $FIRMWARE_DOWNLOAD_URL"linux-firmware_1.112_all.deb"
 echo "Downloading Kernel $KERNEL_VERSION"
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.10.3-031003-generic_3.10.3-031003.201307251835_amd64.deb"  > /dev/null 2>&1
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.10.3-031003_3.10.3-031003.201307251835_all.deb"  > /dev/null 2>&1
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-image-3.10.3-031003-generic_3.10.3-031003.201307251835_amd64.deb"  > /dev/null 2>&1
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.10.3-031003-generic_3.10.3-031003.201307251835_amd64.deb"
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.10.3-031003_3.10.3-031003.201307251835_all.deb"
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-image-3.10.3-031003-generic_3.10.3-031003.201307251835_amd64.deb"
 echo "Updating computer"
 sudo dpkg -i *deb
 echo "Updating Grub"
