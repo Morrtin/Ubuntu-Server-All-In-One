@@ -2,12 +2,12 @@
 #
 # @author   Morrtin
 # @date     2013-09-19
-# @version  1.10
+# @version  1.11
 #
 
 FIRMWARE_DOWNLOAD_URL="http://ubuntu.mirror.cambrium.nl/ubuntu//pool/main/l/linux-firmware/"
 KERNEL_DOWNLOAD_URL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"
-KERNEL_VERSION="v3.10.12-saucy"
+KERNEL_VERSION="v3.11.1-saucy"
 FIRMWARE_VERSION="v1.114"
 
 function download()
@@ -17,18 +17,18 @@ function download()
 }
 
 clear
-mkdir ~/3.10.x
-cd ~/3.10.x
+mkdir ~/3.11.x
+cd ~/3.11.x
 echo "Downloading Firmware $FIRMWARE_VERSION"
 download $FIRMWARE_DOWNLOAD_URL"linux-firmware_1.114_all.deb"
 echo "Downloading Kernel $KERNEL_VERSION"
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.10.12-031012-generic_3.10.12-031012.201309141044_amd64.deb"
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.10.12-031012_3.10.12-031012.201309141044_all.deb"
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-image-3.10.12-031012-generic_3.10.12-031012.201309141044_amd64.deb"
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.11.1-031101-generic_3.11.1-031101.201309141102_amd64.deb"
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.11.1-031101_3.11.1-031101.201309141102_all.deb"
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-image-3.11.1-031101-generic_3.11.1-031101.201309141102_amd64.deb"
 echo "Updating computer"
 sudo dpkg -i *deb
 echo "Updating Grub"
 sudo update-grub
 cd ~
 rm ./01_Kernel_update.sh
-rm -R ~/3.10.x
+rm -R ~/3.11.x
