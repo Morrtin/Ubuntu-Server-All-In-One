@@ -4,7 +4,6 @@
 # @date     2013-10-01
 # @version  1.12
 #
-
 FIRMWARE_DOWNLOAD_URL="http://ubuntu.mirror.cambrium.nl/ubuntu//pool/main/l/linux-firmware/"
 KERNEL_DOWNLOAD_URL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"
 KERNEL_VERSION="v3.11.2-saucy"
