@@ -17,7 +17,7 @@ otherwise I don't recommend to run these scripts.
 * Latest firmware and kernel v3.10.x upgrade
 ```
 cd ~ 
-wget https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/01_Kernel_update.sh
+wget https://raw.github.com/Morrtin/Ubuntu-Server-All-In-One/master/01_Kernel_update.sh
 bash ./01_Kernel_update.sh
 ```
 
