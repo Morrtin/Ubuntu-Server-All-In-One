@@ -1,8 +1,7 @@
--- 27-07-2013 --
+-- 23-10-2013 --
 
 Server
 ========================
-- Solve transfer speed Problem: Copy from Server to Client over Samba Share takes ages
 - Next big step: Groupware - Zarafa
 
 XBMC
