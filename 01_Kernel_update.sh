@@ -24,7 +24,7 @@ download $FIRMWARE_DOWNLOAD_URL"linux-firmware_1.117_all.deb"
 echo "Downloading Kernel $KERNEL_VERSION"
 download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.11.10-031110-generic_3.11.10-031110.201311291453_amd64.deb"
 download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-headers-3.11.10-031110_3.11.10-031110.201311291453_all.deb"
-download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/	linux-image-3.11.10-031110-generic_3.11.10-031110.201311291453_amd64.deb"
+download $KERNEL_DOWNLOAD_URL"$KERNEL_VERSION/linux-image-3.11.10-031110-generic_3.11.10-031110.201311291453_amd64.deb"
 echo "Updating computer"
 sudo dpkg -i *deb
 echo "Updating Grub"
