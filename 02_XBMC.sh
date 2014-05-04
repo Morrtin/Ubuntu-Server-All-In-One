@@ -37,7 +37,7 @@ POWERMANAGEMENT_DIR="/var/lib/polkit-1/localauthority/50-local.d/"
 DOWNLOAD_URL="https://github.com/Morrtin/Ubuntu-Server-All-In-One/raw/master/download/"
 # VAAPI PPA from WSNIPEX includes INTEL VAAPI (hardware / GPU) de-interlacing support
 # http://forum.xbmc.org/showthread.php?tid=165707
-XBMC_PPA="ppa:wsnipex/vaapi"
+XBMC_PPA="ppa:team-xbmc/ppa"
 HTS_TVHEADEND_PPA="ppa:jabbors/hts-stable"
 OSCAM_PPA="ppa:oscam/ppa"
 
